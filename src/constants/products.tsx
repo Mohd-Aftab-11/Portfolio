@@ -5,7 +5,7 @@ import portfoliocontact from "public/images/portfoliocontact.png";
 
 export const products = [
   {
-    href: "https://personal-portfolio-next-js-alpha.vercel.app/",
+    href: "https://portfolio-avqi.vercel.app/",
     title: "Personal Portfolio",
     description: "Build on the following technologies:",
     thumbnail: portfolio,
