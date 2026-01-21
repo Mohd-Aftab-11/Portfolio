@@ -1,0 +1,265 @@
+import { BlogLayout } from "@/components/BlogLayout";
+
+import { CodeWindow } from "@/components/CodeWindow";
+
+export const meta = {
+  date: "2025-01-03",
+  title: "Learning React Hooks",
+  description: "Starting with the hooks in the react",
+  image:
+    "https://miro.medium.com/v2/resize:fit:896/1*_BFgDXAAZuvWDr2PFa9f3g.png",
+  tags: ["React-Hooks", "JavaScript"],
+};
+
+export default (props) => <BlogLayout meta={meta} {...props} />;
+
+# What are Hooks?
+
+Hooks are functions that let you "hook into" React's features, such as state management, lifecycle methods, and context, without writing a class. The two most commonly used hooks are:
+
+1 - useState - For managing state.
+
+2 - useEffect - For handling side effects (like fetching data, subscriptions, etc.).
+
+## Rules of Hooks
+
+Call Hooks at the Top Level: Don’t call hooks inside loops, conditions, or nested functions. Always call them at the top level of your React function.
+
+Call Hooks Only in React Functions: You can use hooks only inside functional components or custom hooks.
+
+#Core Hooks
+
+## 1. UseState
+
+Manages local state in a functional component.
+
+useState takes an initial state as an argument and returns an array with two elements: 1 - The current state. 2 - A function to update the state.
+
+<CodeWindow title="useState.jsx">
+
+```TSX
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+```
+
+</CodeWindow>
+
+## 2. useEffect
+
+Handles side effects, such as fetching data, manipulating the DOM, or setting up subscriptions.
+
+Dependencies: The second argument to useEffect is an array of dependencies. The effect re-runs when any dependency changes.
+
+1 - []: Runs only once.
+2 - [dependency]: Runs when dependency changes.
+3 - No array: Runs after every render.
+
+<CodeWindow title="useEffect.jsx">
+
+```TSX
+import React, { useState, useEffect } from 'react';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup to avoid memory leaks
+  }, []); // Empty dependency array means the effect runs only once.
+
+  return <div>Timer: {seconds}s</div>;
+}
+
+```
+
+</CodeWindow>
+
+## 3. useContext
+
+Accesses values from React's context API without writing a consumer component.
+
+<CodeWindow title="useContext.jsx">
+
+```TSX
+import React, { useContext, createContext } from 'react';
+
+const ThemeContext = createContext();
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return <button style={{ backgroundColor: theme }}>Click Me</button>;
+}
+
+function App() {
+  return (
+    <ThemeContext.Provider value="lightblue">
+      <ThemedButton />
+    </ThemeContext.Provider>
+  );
+}
+```
+
+</CodeWindow>
+
+## 4. useReducer
+
+An alternative to useState, useful for managing more complex state logic.
+
+<CodeWindow title="useReducer.jsx">
+
+```TSX
+import React, { useReducer } from 'react';
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </div>
+  );
+}
+```
+
+</CodeWindow>
+
+## 5. useRef
+
+Accesses a DOM element directly or stores a mutable value that persists across renders.
+
+<CodeWindow title="useRef.jsx">
+
+```TSX
+import React, { useRef } from 'react';
+
+function FocusInput() {
+  const inputRef = useRef();
+
+  const focusInput = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <div>
+      <input ref={inputRef} type="text" />
+      <button onClick={focusInput}>Focus Input</button>
+    </div>
+  );
+}
+```
+
+</CodeWindow>
+
+## 6. useMemo
+
+Memoizes the result of a computation to avoid recalculating it on every render.
+
+<CodeWindow title="useMemo.jsx">
+
+```TSX
+import React, { useState, useMemo } from 'react';
+
+function ExpensiveCalculation({ num }) {
+  const calculate = (n) => {
+    console.log('Calculating...');
+    return n * 2;
+  };
+
+  const result = useMemo(() => calculate(num), [num]);
+
+  return <p>Result: {result}</p>;
+}
+```
+
+</CodeWindow>
+
+## 7. useCallback
+
+Memoizes a function to prevent unnecessary re-creation during renders.
+
+<CodeWindow title="useCallback.jsx">
+
+```TSX
+import React, { useState, useCallback } from 'react';
+
+function Button({ onClick }) {
+  console.log('Rendering Button');
+  return <button onClick={onClick}>Click me</button>;
+}
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  const increment = useCallback(() => {
+    setCount((prev) => prev + 1);
+  }, []);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <Button onClick={increment} />
+    </div>
+  );
+}
+```
+
+</CodeWindow>
+
+## 8. useImperativeHandle
+
+Customizes the instance value exposed when using React.forwardRef.
+
+<CodeWindow title="useImperativeHandle.jsx">
+
+```TSX
+import React, { useRef, useImperativeHandle, forwardRef } from 'react';
+
+const FancyInput = forwardRef((props, ref) => {
+  const inputRef = useRef();
+
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current.focus(),
+  }));
+
+  return <input ref={inputRef} />;
+});
+
+function App() {
+  const inputRef = useRef();
+
+  return (
+    <div>
+      <FancyInput ref={inputRef} />
+      <button onClick={() => inputRef.current.focus()}>Focus Input</button>
+    </div>
+  );
+}
+```
+
+</CodeWindow>

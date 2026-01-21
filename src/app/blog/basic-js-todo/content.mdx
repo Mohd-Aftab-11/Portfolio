@@ -1,0 +1,132 @@
+import { BlogLayout } from "@/components/BlogLayout";
+
+import { CodeWindow } from "@/components/CodeWindow";
+
+export const meta = {
+  date: "2025-01-01",
+  title: "Building a Simple To-Do List with JavaScript",
+  description:
+    "In this article, we'll build a basic to-do list application using plain JavaScript. This will cover fundamental JavaScript concepts.",
+  image:
+    "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*F_pFNmbeakF86E9ToQJ1ug.png",
+  tags: ["HTML", "CSS", "JavaScript"],
+};
+
+export default (props) => <BlogLayout meta={meta} {...props} />;
+
+Introduction:
+
+In this article, we'll build a basic to-do list application using plain JavaScript. This project will cover fundamental JavaScript concepts like:
+
+1 - DOM Manipulation: Interacting with HTML elements.
+
+2 - Event Handling: Responding to user actions (e.g., button clicks).
+
+3 - Arrays: Storing and managing the list of tasks.
+
+4 - Local Storage: Persisting data even after the page reloads.
+
+## Project Setup:
+
+1 - Create an HTML file named index.html.
+
+<CodeWindow title="index.html">
+
+```TSX
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style> /* Add your CSS styles here */ </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <button id="addButton">Add</button>
+    <ul id="taskList"></ul>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+```
+
+</CodeWindow>
+
+2 - Create a JavaScript file named script.js. This file will contain the logic for our to-do list.
+
+<CodeWindow title="script.js">
+
+```TSX
+
+// Get necessary elements from the DOM
+const taskInput = document.getElementById('taskInput');
+const addButton = document.getElementById('addButton');
+const taskList = document.getElementById('taskList');
+
+// Load tasks from local storage on page load
+window.addEventListener('load', () => {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    storedTasks.forEach(task => {
+        createTaskElement(task);
+    });
+});
+
+// Add task functionality
+addButton.addEventListener('click', () => {
+    const taskText = taskInput.value.trim();
+
+    if (taskText !== '') {
+        const task = {
+            text: taskText,
+            completed: false
+        };
+
+        createTaskElement(task);
+        saveTasksToLocalStorage();
+        taskInput.value = '';
+    }
+});
+
+// Create a task element in the DOM
+function createTaskElement(task) {
+    const listItem = document.createElement('li');
+    listItem.textContent = task.text;
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = task.completed;
+    listItem.prepend(checkbox);
+
+    checkbox.addEventListener('change', () => {
+        task.completed = checkbox.checked;
+        saveTasksToLocalStorage();
+    });
+
+    taskList.appendChild(listItem);
+}
+
+// Save tasks to local storage
+function saveTasksToLocalStorage() {
+    const tasks = Array.from(taskList.children).map(item => ({
+        text: item.textContent,
+        completed: item.querySelector('input[type="checkbox"]').checked
+    }));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+```
+
+</CodeWindow>
+
+## Explaination:
+
+This JavaScript code demonstrates the creation of a simple to-do list application.
+
+It begins by selecting the necessary HTML elements and loading any previously saved tasks from local storage.
+
+Users can input tasks, and upon clicking the "Add" button, the task is added to the list with a checkbox.
+
+The checkbox allows users to mark tasks as completed, and this status is dynamically updated and saved to local storage.
+
+The code utilizes fundamental JavaScript concepts such as DOM manipulation, event handling, arrays, and local storage to provide a basic yet functional to-do list experience.
