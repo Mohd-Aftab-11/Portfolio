@@ -34,7 +34,7 @@ export const socials = [
   },
 
   {
-    href: "hackerrank.com/profile/ma_aftab200",
+    href: "https://www.hackerrank.com/profile/ma_aftab200",
     label: "Hackerrank",
     icon: IconBrandPushbullet,
   },
