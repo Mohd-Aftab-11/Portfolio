@@ -22,7 +22,7 @@ export const socials = [
   },
 
   {
-    href: "https://www.geeksforgeeks.org/profile/aftabansari28",
+    href: "https://www.geeksforgeeks.org/profile/aftabansari28?tab=activity",
     label: "GeeksforGeeks",
     icon: SiGeeksforgeeks,
   },
