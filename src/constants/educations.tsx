@@ -14,7 +14,7 @@ export const educations = [
       "Pursuing the degree of Bachelor of Computer Application. This was scheduled to be completed by the year 2026.",
     thumbnail: sidefolioAlgochurn,
     images: [sidefolioAlgochurn, sidefolioAlgochurn2],
-    stack: ["Start Year: 2023", "End Year: 2026", "Status: Pursuing"],
+    stack: ["Start Year: 2023", "End Year: 2026", "Status: Graduated"],
   },
   {
     href: "#",
