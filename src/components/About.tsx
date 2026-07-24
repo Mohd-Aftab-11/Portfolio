@@ -43,8 +43,7 @@ export default function About() {
 
       <div className="max-w-4xl">
         <Paragraph className=" mt-4">
-          Hey there, I&apos;m <Highlight>Mohd Aftab</Highlight> - a passionate
-          developer, who can create awesome apps with a clear code. Welcome to
+          Hey there, I&apos;m <Highlight>Mohd Aftab</Highlight> - a Java Full Stack Developer expanding into AI/ML with Python, who can create awesome apps with a clear code. Welcome to
           my corner of the digital world!
         </Paragraph>
 
